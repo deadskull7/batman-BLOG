@@ -1,0 +1,16 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+
+	<div class="col-sm-10 col-sm-offset-5">
+		<h1>Feel free to contact us</h1>
+	<form method="post" novalidate>
+	  {% csrf_token %}
+	  {{ form|crispy }}
+	  <button type="submit" class="btn btn-primary btn-lg">Submit</button>
+	</form>
+</div>
+
+{% endblock %}
+

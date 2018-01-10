@@ -1,0 +1,152 @@
+{% load staticfiles %}
+
+
+
+<html>
+    <head>
+
+        <title>Rohit's Blog</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        
+        <link href="https://fonts.googleapis.com/css?family=Lobster" rel="stylesheet">  
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="{% static 'css/blog.css' %}">
+        
+        {% block head_extra %} {% endblock head_extra %}
+    </head>
+    <body>
+
+        <div id="fb-root"></div>
+        <script>(function(d, s, id) {
+          var js, fjs = d.getElementsByTagName(s)[0];
+          if (d.getElementById(id)) return;
+          js = d.createElement(s); js.id = id;
+          js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v2.11';
+          fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));</script>
+
+        <script
+              src="http://code.jquery.com/jquery-1.12.4.min.js"
+              integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
+              crossorigin="anonymous"></script>
+
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
+
+
+        <script type="text/javascript">
+        $(document).ready(function(){
+            $(".content-markdown").each(function(){
+                    var content = $(this).text()
+                    console.log(content)
+                    var markedContent = marked(content)
+                    console.log(markedContent)
+                    $(this).html(markedContent)
+            })
+            $(".content-markdown img").each(function(){
+                $(this).addClass("img-responsive"); 
+            })
+          
+        })    
+
+        </script>
+        
+
+
+        <nav class="navbar navbar-inverse">
+            <div class="container-fluid">
+
+                <!-- Header -->
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#topNavBar">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{% url 'post_list' %}">Rohit</a>
+                </div>
+
+                <!-- Items -->
+                <div class="collapse navbar-collapse" id="topNavBar">
+                    <ul class="nav navbar-nav">
+                        <li><a href="https://rohitvermajaipur.wixsite.com/rohit"><span class="glyphicon glyphicon-cd" aria-hidden="true"></span>&nbsp; About me</a></li>
+                        <li><a href="{% url 'email' %}"><span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>&nbsp; Contact Us</a></li>
+                    </ul>
+
+                    <form class="navbar-form navbar-left"  method="GET" action="">
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="q" value="{{ request.GET.q }}" placeholder="Search posts"/>
+                        </div>
+                            <input type="submit"  class="btn btn-default" value="Search"/>
+                    </form>
+
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a href="{% url 'account_update' %}">
+                                <span class="glyphicon glyphicon-user" aria-hidden="true"></span>&nbsp; Profile
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{% url 'change_password' %}">
+                                <i class="glyphicon glyphicon-wrench"></i> Change Password
+                            </a>
+                        <li>
+                            <a href="{% url 'post_new' %}">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp; Add Article
+                            </a>
+                        </li>
+                        <li>
+                            {% if user.is_authenticated %}
+                                <a href="{% url 'logout' %}">
+                                <span class="glyphicon glyphicon-off" aria-hidden="true"></span>&nbsp; LogOut
+                                </a>
+                            {% else %}
+                                <a href="{% url 'login' %}"><i class="glyphicon glyphicon-log-in"></i> Login</a>
+                            {% endif %}
+                        </li>
+                        <li>
+                                <a href="{% url 'signup' %}"> SignUp</a>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </nav>
+
+
+
+
+        <div class="page-header">
+            {% if user.is_authenticated %}
+                <p class="top-menu"><small><span class="glyphicon glyphicon-user">Hello {{user.username}}</span></p>
+            {% endif %}
+            <div>
+                <h5><i class="fa fa-copyright"> Powered by Batman</i></h5>
+            </div>
+            <div>
+                <a href="https://www.facebook.com/" class="top-menu"><i class="fa fa-facebook-official"></i></a>
+                <a href="https://twitter.com/" class="top-menu"><i class="fa fa-twitter-square"></i> </a>
+                <a href="https://instagram.com/" class="top-menu"><i class="fa fa-instagram"></i> </a>
+                <a href="https://github.com/" class="top-menu"><i class="fa fa-github"></i> </a>
+                <a class="top-menu"><h4>Follow Me:</h4></a>
+            </div>
+            <div>
+
+                <h1><a href="{% url 'post_list' %}">Rohit's Blog</a></h1>
+            </div>
+        </div>
+
+        <div class="content container">
+            <div class="row">
+                <div class="col-md-8">
+                {% block content %}
+                {% endblock %}
+                </div>
+            </div>
+        </div>
+
+    </body>
+</html>

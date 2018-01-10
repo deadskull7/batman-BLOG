@@ -1,0 +1,22 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block head_extra %} 
+{{ form.media }}
+
+{% endblock head_extra %}
+
+{% block content %}
+
+    <div class="col-sm-10 col-sm-offset-5">
+    <h2>Profile Page:</h2><h4>Please keep your information current. Thanks!</h4>
+    <form action="." method="POST">
+        {% csrf_token %} 
+        {{ noodle_form|crispy }}
+        <div class="divider"></div>
+        {{ formset|crispy }}
+        <button type="submit" class="save btn btn-danger">Done</button>
+    </form>
+    </div>
+
+{% endblock %}

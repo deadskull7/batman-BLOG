@@ -1,0 +1,20 @@
+{% extends "blog/base.html" %}
+{% load crispy_forms_tags %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+    {% if form.errors %}
+        <p><h2>Your username and password didn't match. Please try again.</h2></p>
+    {% endif %}
+    <div class="col-sm-10 col-sm-offset-5">
+    <h1>Login</h1>
+    <form method="post" action="{% url 'login' %}">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <input class="btn btn-primary btn-lg" type="submit" value="Login" />
+    <input type="hidden" name="next" value="{{ next }}" />
+    </form>
+    <a href="{% url 'social:begin' 'facebook' %}">Login with Facebook</a>
+    </div>
+{% endblock %}

@@ -1,0 +1,55 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="post">
+
+        {% if post.published_date %}
+            <div class="date">
+                <p>{{ post.published_date }}</p>
+                 Author: {{ post.author }}
+            </div>
+        {% endif %}
+
+        {% if user.is_authenticated %}
+            {% if user.is_superuser or user.is_staff %}
+     		<a class="btn btn-success" href="{% url 'post_edit' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"> Edit</span></a>
+            <a class="btn btn-danger" href="{% url 'post_remove' pk=post.pk %}"><span class="glyphicon glyphicon-trash"> Delete</span></a>
+            {% endif %}
+        {% endif %}
+
+        <div class="col-sm-10 col-sm-offset-5 text-markdown">
+            <img src="{{ post.image.url }}">
+            <h1>{{ post.title }}</h1>
+            <div class='content-markdown'><p>{{ post.content }}</p></div>
+        </div>
+    </div>
+    <hr>
+    <a class="btn btn-danger" href="{% url 'add_comment_to_post' pk=post.pk %}">Add comment</a>
+
+    <div class="col-sm-10 col-sm-offset-2">
+    <div class="fb-comments" data-href="https://developers.facebook.com/docs/plugins/comments#configurator" data-numposts="2"></div>
+    
+    </div>
+
+
+    {% for comment in post.comments.all %}
+        {% if user.is_authenticated %}
+        <div class="comment">
+            <div class="date">
+                <p>{{ comment.created_date|timesince }} ago</p>
+                {% if user.is_superuser or user.is_staff %}
+                    <a class="btn btn-basic btn-xs" href="{% url 'comment_remove' pk=comment.pk %}"><span class="glyphicon glyphicon-remove"></span></a>
+                    <a class="btn btn-basic btn-xs" href="{% url 'comment_approve' pk=comment.pk %}"><span class="glyphicon glyphicon-ok"></span></a>
+                {% endif %}
+            </div>
+            <strong>{{ comment.author }}</strong>
+            <div class='content-markdown'><p>{{ comment.text }}</p></div>
+        </div>
+
+        {% endif %}
+    {% empty %}
+        <p>No comments here yet :(</p>
+    {% endfor %}
+
+{% endblock %}

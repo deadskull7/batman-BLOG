@@ -1,0 +1,19 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+{% if posts %}
+	<h1>Some results you want to see :</h1>
+	{% for post in posts %}
+		<p>
+		<a href="{% url 'post_detail' pk=post.pk %}"><h3>{{ post.title }}</h3></a>
+		</p>
+	{% endfor %}
+
+{% else %}
+
+<a href="{% url 'post_list' %}"><h1>(~_~;)  Oops, the post doesn't exist</h1></a>
+
+{% endif %}
+
+{% endblock %}
