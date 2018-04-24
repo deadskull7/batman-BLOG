@@ -1,4 +1,4 @@
-# BATMAN - BLOG
+# Batman - Blog
 
 #### Django based blog with full database handling of user and all utility function a
 #### user would need. (registration , login (along with facebook and google) , create , read ,
